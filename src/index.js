@@ -31,7 +31,7 @@ export default class DynamicFunction {
 
     func.getExecutor = getExecutor
     func.getName = () => name
-    func.getLenght = function(...args) {
+    func.getLength = function(...args) {
       let executor = getExecutor.apply(this, args)
 
       switch (isPromise(executor)) {
