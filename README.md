@@ -38,7 +38,7 @@ const fn = new DynamicFunction(() => {
 })
 
 fn.isExecutable() // false
-fn(1, 2) // 无反应
+fn(1, 2) // nothing happen
 
 flag = true
 fn.isExecutable() // true
@@ -46,7 +46,7 @@ fn(1, 2) // 3
 
 flag = false
 fn.isExecutable() // false
-fn(1, 2) // 无反应
+fn(1, 2) // nothing happen
 ```
 
 - - -

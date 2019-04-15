@@ -9,9 +9,13 @@
     "test:target": "mocha "
   },
   "keywords": [
-    "jsBridge",
-    "js bridge",
-    "bridge adapter"
+    "dynamic",
+    "function",
+    "polymorphism",
+    "polymorph",
+    "polymorphic",
+    "variadic",
+    "overloading"
   ],
   "author": "CJY0208",
   "license": "ISC",
