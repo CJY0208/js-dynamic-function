@@ -1,64 +1,50 @@
 const isFunction = value => typeof value === 'function'
 const isPromise = value => !!value && isFunction(value.then)
-const parseConfig = config =>
-  typeof config === 'function'
-    ? {
-        getExecutor: config
+const parseConfig = (p1, p2) => {
+  switch (typeof p1) {
+    case 'string':
+      return {
+        name: p1,
+        getExecutor: p2
       }
-    : config
+    case 'function':
+      return {
+        getExecutor: p1
+      }
+    case 'object':
+    default:
+      return p1
+  }
+}
+const gen = (getExecutor, valuer) =>
+  function(...args) {
+    let executor = getExecutor.apply(this, args)
+
+    return isPromise(executor)
+      ? new Promise(resolve =>
+          executor.then(executor =>
+            resolve(valuer.call(this, executor, ...args))
+          )
+        )
+      : valuer.call(this, executor, ...args)
+  }
 
 export default class DynamicFunction {
-  constructor(config) {
-    const { name = '', getExecutor } = parseConfig(config)
+  constructor(...config) {
+    const { name = '', getExecutor } = parseConfig(...config)
 
-    const func = function(...args) {
-      let executor = getExecutor.apply(this, args)
-
-      switch (isPromise(executor)) {
-        case true:
-          return new Promise(resolve => {
-            executor.then(executor =>
-              resolve(
-                isFunction(executor) ? executor.apply(this, args) : undefined
-              )
-            )
-          })
-        case false:
-        default:
-          return isFunction(executor) ? executor.apply(this, args) : undefined
-      }
-    }
+    const func = gen(getExecutor, function(executor, ...args) {
+      return isFunction(executor) ? executor.apply(this, args) : undefined
+    })
 
     func.getExecutor = getExecutor
-    func.getName = () => name
-    func.getLength = function(...args) {
-      let executor = getExecutor.apply(this, args)
-
-      switch (isPromise(executor)) {
-        case true:
-          return new Promise(resolve => {
-            executor.then(executor =>
-              resolve(isFunction(executor) ? executor.length : -1)
-            )
-          })
-        case false:
-        default:
-          return isFunction(executor) ? executor.length : -1
-      }
-    }
-    func.isExecutable = function(...args) {
-      let executor = getExecutor.apply(this, args)
-
-      switch (isPromise(executor)) {
-        case true:
-          return new Promise(resolve => {
-            executor.then(executor => resolve(isFunction(executor)))
-          })
-        case false:
-        default:
-          return isFunction(executor)
-      }
-    }
+    func.isExecutable = gen(getExecutor, executor => isFunction(executor))
+    func.getName = gen(getExecutor, executor =>
+      name ? name : isFunction(executor) ? executor.name : ''
+    )
+    func.getLength = gen(getExecutor, executor =>
+      isFunction(executor) ? executor.length : undefined
+    )
 
     return func
   }

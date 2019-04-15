@@ -17,7 +17,7 @@
 ```javascript
 let flag = false
 
-const dynamicFunc = new DynamicFunction(() => {
+const fn = new DynamicFunction(() => {
   if (!flag) {
     return null
   }
@@ -25,39 +25,39 @@ const dynamicFunc = new DynamicFunction(() => {
   return (a, b) => a + b
 })
 
-dynamicFunc.isExecutable() // false
-dynamicFunc(1, 2) // 无反应
+fn.isExecutable() // false
+fn(1, 2) // 无反应
 
 flag = true
-dynamicFunc.isExecutable() // true
-dynamicFunc(1, 2) // 3
+fn.isExecutable() // true
+fn(1, 2) // 3
 
 flag = false
-dynamicFunc.isExecutable() // false
-dynamicFunc(1, 2) // 无反应
+fn.isExecutable() // false
+fn(1, 2) // 无反应
 ```
+
 
 - - -
 
-## 粗略实现
+## 异步
+
+若 `getExecutor` 函数为异步，则其执行过程及相关方法均为异步
 
 ```javascript
-const isFunction = value => typeof value === 'function'
 
-function DynamicFunction(getExecutor) {
-  
-  const func = (...args) => {
-    const executor = getExecutor(...args)
+const delay = time => new Promise(resolve => setTimeout(resolve, time))
 
-    if (!isFunction(executor)) {
-      return
-    }
+const fn = new DynamicFunction(async () => {
+  await delay(1000)
 
-    return executor(...args)
+  return function test(a, b) {
+    return a + b
   }
+})
 
-  func.isExecutable = (...args) => isFunction(getExecutor(...args))
-
-  return func
-}
+await fn(1, 2) // log '3' after 1000 ms
+await fn.isExecutable() // log 'true' after 1000 ms
+await fn.getName() // log 'test' after 1000 ms
+await fn.getLength() // log '2' after 1000 ms
 ```
