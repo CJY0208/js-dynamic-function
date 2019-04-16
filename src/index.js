@@ -16,7 +16,7 @@ const parseConfig = (p1, p2) => {
       return p1
   }
 }
-const gen = (getExecutor, valuer) =>
+export const gen = (getExecutor, valuer) =>
   function(...args) {
     let executor = getExecutor.apply(this, args)
 
