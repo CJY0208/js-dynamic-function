@@ -10,7 +10,8 @@ export default [
     output: {
       name,
       file: 'dist/index.min.js',
-      format: 'umd'
+      format: 'umd',
+      exports: 'named'
     },
     plugins: [
       resolve(),
@@ -25,7 +26,8 @@ export default [
     output: {
       name,
       file: 'dist/index.js',
-      format: 'umd'
+      format: 'umd',
+      exports: 'named'
     },
     plugins: [
       resolve(),

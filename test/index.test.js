@@ -1,5 +1,5 @@
 const { assert } = require('chai')
-const DynamicFunction = require('../index')
+const { default: DynamicFunction } = require('../index')
 
 describe('DynamicFunction 功能测试', () => {
   it('README 示例', () => {
