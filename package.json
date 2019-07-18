@@ -1,6 +1,6 @@
 {
   "name": "js-dynamic-function",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "动态函数，类似于多态函数，但不限于按参数类型条件切换执行体",
   "main": "index.js",
   "scripts": {
