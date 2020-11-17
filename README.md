@@ -4,6 +4,14 @@
 
 - - -
 
+## 安装
+
+```bash
+yarn add js-dynamic-function
+# or
+npm install js-dynamic-function --save
+```
+
 ## 简介
 
 ### 定义
