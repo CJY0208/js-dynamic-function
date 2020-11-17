@@ -1,5 +1,7 @@
 # DynamicFunction
 
+![](https://visitor-badge.glitch.me/badge?page_id=cjy0208.js-dynamic-function)
+
 动态函数，类似于多态函数，但不限于按参数类型条件切换执行体
 
 - - -
